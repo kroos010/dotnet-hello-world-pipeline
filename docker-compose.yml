@@ -14,3 +14,9 @@ services:
     # depends_on:
     #   api:
     #     condition: service_healthy
+    networks:
+      - nginx-proxy-manager-external
+
+networks:
+  nginx-proxy-manager-external:
+    external: true
