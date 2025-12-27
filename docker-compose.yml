@@ -1,0 +1,16 @@
+services:
+  dotnet-hello-world-pipeline:
+    build:
+      context: ./dotnet-hello-world-pipeline
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5000
+      # - ASPNETCORE_URLS=https://+:443;http://+:80
+      # - ASPNETCORE_Kestrel__Certificates__Default__Password=-\0pw-
+      # - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    ports:
+      - "5000:5000"
+    # depends_on:
+    #   api:
+    #     condition: service_healthy
