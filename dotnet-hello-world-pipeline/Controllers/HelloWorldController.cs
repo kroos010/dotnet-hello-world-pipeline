@@ -9,7 +9,7 @@ namespace dotnet_hello_world_pipeline.Controllers
         [HttpGet("/")]
         public IActionResult Get()
         {
-            return Ok("Hello, World updated!");
+            return Ok("Hello, World updated!!");
         }
     }
 }
