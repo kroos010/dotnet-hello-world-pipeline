@@ -1,0 +1,23 @@
+name: Update Portainer Stack
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  update-stack:
+    # Only run if commit message contains [deploy]
+    if: contains(github.event.head_commit.message, '[deploy]')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Portainer Webhook
+        env:
+          PORTAINER_WEBHOOK_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }}
+          # CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          # CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+        run: |
+          curl -X POST "$PORTAINER_WEBHOOK_URL" \
+            # -H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" \
+            # -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET"
