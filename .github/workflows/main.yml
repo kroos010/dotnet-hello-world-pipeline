@@ -22,8 +22,8 @@ jobs:
             -o /dev/null \
             -w "%{http_code}" \
             -s)
-            # -H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" \
-            # -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET"
+             -H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" \
+             -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET"
           
           echo "HTTP Status: $HTTP_STATUS"
           
