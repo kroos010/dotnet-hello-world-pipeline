@@ -26,10 +26,8 @@ jobs:
             -s)
           
           echo "HTTP Status: $HTTP_STATUS"
-
-          echo ${{ secrets.PORTAINER_WEBHOOK_URL }}
           
-          if [ "$HTTP_STATUS" -eq 200 ]; then
+          if [ "$HTTP_STATUS" -eq 204 ]; then
             echo "✅ Successfully triggered Portainer webhook"
             exit 0
           else
