@@ -19,11 +19,11 @@ jobs:
           CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
         run: |
           HTTP_STATUS=$(curl -X POST "$PORTAINER_WEBHOOK_URL" \
+            -H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" \
+            -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET" \
             -o /dev/null \
             -w "%{http_code}" \
             -s)
-             -H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" \
-             -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET"
           
           echo "HTTP Status: $HTTP_STATUS"
 
