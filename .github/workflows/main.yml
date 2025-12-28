@@ -26,6 +26,8 @@ jobs:
              -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET"
           
           echo "HTTP Status: $HTTP_STATUS"
+
+          cho echo ${{ secrets.PORTAINER_WEBHOOK_URL }}
           
           if [ "$HTTP_STATUS" -eq 200 ]; then
             echo "✅ Successfully triggered Portainer webhook"
