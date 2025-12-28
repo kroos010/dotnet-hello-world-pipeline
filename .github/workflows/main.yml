@@ -10,7 +10,7 @@ jobs:
     # Only run if commit message contains [deploy]
     if: contains(github.event.head_commit.message, '[deploy]')
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Trigger Portainer Webhook
         env:
@@ -18,6 +18,19 @@ jobs:
           # CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
           # CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
         run: |
-          curl -X POST "$PORTAINER_WEBHOOK_URL" \
+          HTTP_STATUS=$(curl -X POST "$PORTAINER_WEBHOOK_URL" \
+            -o /dev/null \
+            -w "%{http_code}" \
+            -s)
             # -H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" \
             # -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET"
+          
+          echo "HTTP Status: $HTTP_STATUS"
+          
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "✅ Successfully triggered Portainer webhook"
+            exit 0
+          else
+            echo "❌ Failed to trigger webhook. Status code: $HTTP_STATUS"
+            exit 1
+          fi
