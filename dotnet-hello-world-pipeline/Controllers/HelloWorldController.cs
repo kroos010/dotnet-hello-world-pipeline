@@ -9,7 +9,7 @@ namespace dotnet_hello_world_pipeline.Controllers
         [HttpGet("/")]
         public IActionResult Get()
         {
-            return Ok("Hello, World updated from Kevin!!!@");
+            return Ok("Hello, World updated from Kevin!!!@ Should be updated but failing test!");
         }
     }
 }
