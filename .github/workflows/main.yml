@@ -1,14 +1,13 @@
-name: Update Portainer Stack
-
+name: CI/CD Pipeline
 on:
   push:
     branches: [main]
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -18,16 +17,30 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
-    - name: Test
+      run: dotnet build --no-restore --configuration Release
+
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    - name: Run tests
       run: dotnet test --no-build --verbosity normal
 
-  update-stack:
-    # Only run if commit message contains [deploy]
-    needs: build
+  deploy:
+    name: Deploy to Portainer
+    needs: [build, test]
     if: contains(github.event.head_commit.message, '[deploy]')
     runs-on: ubuntu-latest
-    
     steps:
       - name: Trigger Portainer Webhook
         env:
@@ -51,4 +64,3 @@ jobs:
             echo "❌ Failed to trigger webhook. Status code: $HTTP_STATUS"
             exit 1
           fi
-
