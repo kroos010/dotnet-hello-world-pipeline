@@ -21,31 +21,27 @@ jobs:
     
     - name: Build
       run: dotnet build --no-restore --configuration Release
-    
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-output
-        path: .
-        retention-days: 1
 
   test:
     name: Test
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: build-output
+    - uses: actions/checkout@v4
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 10.0.x
     
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    
     - name: Run tests
-      run: dotnet test --no-build --no-restore --configuration Release --verbosity normal
+      run: dotnet test --no-build --configuration Release --verbosity normal
 
   deploy:
     name: Deploy to Portainer
@@ -58,7 +54,7 @@ jobs:
         env:
           PORTAINER_WEBHOOK_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }}
           CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
-          CF_ACCESS_CLIENT_SECRET: $CF_ACCESS_CLIENT_SECRET }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
         run: |
           HTTP_STATUS=$(curl -X POST "$PORTAINER_WEBHOOK_URL" \
             -H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" \
