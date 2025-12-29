@@ -2,5 +2,10 @@
   <Folder Name="/Solution Items/">
     <File Path="docker-compose.yml" />
   </Folder>
-  <Project Path="dotnet-hello-world-pipeline/dotnet-hello-world-pipeline.csproj" />
+  <Folder Name="/src/">
+    <Project Path="dotnet-hello-world-pipeline/dotnet-hello-world-pipeline.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="dotnet-hello-world-pipeline.Tests/dotnet-hello-world-pipeline.Tests.csproj" Id="4aa40e04-c0b7-4067-a0e9-de1c50dd7110" />
+  </Folder>
 </Solution>
